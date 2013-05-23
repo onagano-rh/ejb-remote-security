@@ -1,0 +1,9 @@
+ejb-remote/client/target/
+ejb-remote/server-side/target/
+eap610/domain/
+eap610/master/
+eap610/slave/
+eap610/standalone/configuration/standalone_xml_history/
+eap610/standalone/data/
+eap610/standalone/log/
+eap610/standalone/tmp/
