@@ -7,11 +7,21 @@ Preliminary
 
 Export JBOSS_HOME environment variable of your EAP 6.1 installation.
 
-    export JBOSS_HOME=/path/to/eap610/jboss-eap-6.1
+    export JBOSS_HOME=/path/to/jboss-eap-6.1
 
-And configure Maven profiles in your `~/.m2/settings.xml` by following
-this section, [Configure Maven]
-(https://github.com/jboss-jdf/jboss-as-quickstart#configure-maven-).
+And download
+[EAP 6.1 Maven Repository]
+(https://access.redhat.com/jbossnetwork/restricted/softwareDetail.html?softwareId=21743&product=appplatform&version=6.1.0&downloadType=distributions).
+Assume it is extracted into `/path/to` directory.
+
+Then confiure Maven profiles in your `~/.m2/settings.xml` which must look
+like, or contain the profiles of, `example-settings.xml` of this repository.
+Note that the path `file:///path/to/jboss-eap-6.1.0.GA-maven-repository`
+should be matched with your actual EAP 6.1 Maven Repository installation.
+You can find more details about this configuration at
+[Configure Maven]
+(https://github.com/jboss-jdf/jboss-as-quickstart#configure-maven-),
+if needed.
 
 
 Run EAP standalone server
