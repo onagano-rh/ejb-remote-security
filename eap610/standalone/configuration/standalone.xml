@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <server xmlns="urn:jboss:domain:1.4">
+
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -25,6 +26,8 @@
         <extension module="org.jboss.as.webservices"/>
         <extension module="org.jboss.as.weld"/>
     </extensions>
+
+
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -35,7 +38,6 @@
             </security-realm>
             <security-realm name="ApplicationRealm">
                 <authentication>
-                    <local default-user="$local" allowed-users="*"/>
                     <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
                 </authentication>
                 <authorization>
@@ -52,6 +54,7 @@
             </http-interface>
         </management-interfaces>
     </management>
+
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:1.2">
             <console-handler name="CONSOLE">
@@ -224,11 +227,15 @@
             <security-domains>
                 <security-domain name="other" cache-type="default">
                     <authentication>
+                        <login-module code="org.jboss.as.quickstarts.ejb.remote.secure.SampleLoginModule" flag="optional">
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                        </login-module>
                         <login-module code="Remoting" flag="optional">
                             <module-option name="password-stacking" value="useFirstPass"/>
                         </login-module>
                         <login-module code="RealmDirect" flag="required">
                             <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="realm" value="ApplicationRealm"/>
                         </login-module>
                     </authentication>
                 </security-domain>
@@ -274,6 +281,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:1.0"/>
     </profile>
+
     <interfaces>
         <interface name="management">
             <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
@@ -281,15 +289,11 @@
         <interface name="public">
             <inet-address value="${jboss.bind.address:127.0.0.1}"/>
         </interface>
-        <!-- TODO - only show this if the jacorb subsystem is added  -->
         <interface name="unsecure">
-            <!--
-              ~  Used for IIOP sockets in the standard configuration.
-              ~                  To secure JacORB you need to setup SSL 
-              -->
             <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
         </interface>
     </interfaces>
+
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-native" interface="management" port="${jboss.management.native.port:9999}"/>
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
@@ -304,4 +308,10 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+
+    <deployments>
+        <deployment name="jboss-as-ejb-remote-server-side.jar" runtime-name="jboss-as-ejb-remote-server-side.jar">
+            <content sha1="c9207e83e0ed811b4ca5667eefceedd5c2adc851"/>
+        </deployment>
+    </deployments>
 </server>
