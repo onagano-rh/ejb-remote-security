@@ -28,6 +28,7 @@ Run EAP standalone server
 -------------------------
 
     git clone https://github.com/onagano-rh/ejb-remote-security.git
+    git checkout custom-security
     cd ejb-remote-security/eap610
     bin/standalone.sh -Djboss.server.base.dir=./standalone
 
