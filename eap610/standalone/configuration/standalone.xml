@@ -228,7 +228,8 @@
                 <security-domain name="other" cache-type="default">
                     <authentication>
                         <login-module code="org.jboss.as.quickstarts.ejb.remote.secure.SampleLoginModule" flag="optional">
-                            <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="hashUserPassword" value="false"/>
+                            <module-option name="hashStorePassword" value="false"/>
                         </login-module>
                         <login-module code="Remoting" flag="optional">
                             <module-option name="password-stacking" value="useFirstPass"/>
@@ -308,4 +309,10 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+
+    <deployments>
+        <deployment name="jboss-as-ejb-remote-server-side.jar" runtime-name="jboss-as-ejb-remote-server-side.jar">
+            <content sha1="7112f528f132954e38ab3ec7fc3e5d50142ffaa8"/>
+        </deployment>
+    </deployments>
 </server>
