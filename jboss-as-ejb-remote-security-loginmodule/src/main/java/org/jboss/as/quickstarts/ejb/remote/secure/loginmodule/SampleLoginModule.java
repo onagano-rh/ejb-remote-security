@@ -1,4 +1,4 @@
-package org.jboss.as.quickstarts.ejb.remote.secure;
+package org.jboss.as.quickstarts.ejb.remote.secure.loginmodule;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -71,47 +71,5 @@ public class SampleLoginModule extends UsernamePasswordLoginModule
         String passwd = "quickstartPwd1!";
         System.out.println("Found password=" + passwd);
         return passwd;
-    }
-
-    protected String[] getUsernameAndPassword() throws LoginException
-    {
-        String[] info = {null, null};
-        // prompt for a username and password
-        if( callbackHandler == null ) {
-            throw new LoginException("Error: no CallbackHandler available " +
-                                     "to collect authentication information");
-        }
-
-        NameCallback nc = new NameCallback("User name: ", "guest");
-        boolean isEchoOn = false;
-        PasswordCallback pc = new PasswordCallback("Password: ", isEchoOn);
-        Callback[] callbacks = {nc, pc};
-        String username = null;
-        String password = null;
-        char[] credential;
-        try {
-            callbackHandler.handle(callbacks);
-            username = nc.getName();
-            char[] tmpPassword = pc.getPassword();
-            if( tmpPassword != null ) {
-                credential = new char[tmpPassword.length];
-                System.arraycopy(tmpPassword, 0, credential, 0, tmpPassword.length);
-                pc.clearPassword();
-                password = new String(credential);
-            }
-        }
-        catch(IOException e) {
-            LoginException le = new LoginException("Failed to get username/password");
-            le.initCause(e);
-            throw le;
-        }
-        catch(UnsupportedCallbackException e) {
-            LoginException le = new LoginException("CallbackHandler does not support: " + e.getCallback());
-            le.initCause(e);
-            throw le;
-        }
-        info[0] = username;
-        info[1] = password;
-        return info;
     }
 }

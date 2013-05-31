@@ -1,5 +1,6 @@
 ejb-remote/client/target/
 ejb-remote/server-side/target/
+jboss-as-ejb-remote-security-loginmodule/target
 eap610/domain/
 eap610/master/
 eap610/slave/
