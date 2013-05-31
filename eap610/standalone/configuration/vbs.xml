@@ -84,6 +84,7 @@
             </root-logger>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:1.1">
+            <datasources/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:deployment-scanner:1.1">
             <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000"/>
@@ -236,5 +237,4 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
-
 </server>
