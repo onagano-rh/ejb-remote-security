@@ -309,10 +309,4 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
-
-    <deployments>
-        <deployment name="jboss-as-ejb-remote-server-side.jar" runtime-name="jboss-as-ejb-remote-server-side.jar">
-            <content sha1="7112f528f132954e38ab3ec7fc3e5d50142ffaa8"/>
-        </deployment>
-    </deployments>
 </server>
