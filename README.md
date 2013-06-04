@@ -36,6 +36,20 @@ Then an EAP standalone server runs in the `eap610` directory, using
 configurations in the `standalone` directory.
 
 
+Build sample login module and configure it
+------------------------------------------
+
+    cd ../jboss-as-ejb-remote-security-loginmodule
+    mvn package
+    $JBOSS_HOME/bin/jboss-cli.sh -c --user=quickstartUser --password=quickstartPwd1!
+    # In JBoss CLI
+    module add --name=org.jboss.as.quickstarts.ejb.remote.secure.loginmodule --resources=/path/to/ejb-remote-security/jboss-as-ejb-remote-security-loginmodule/target/jboss-as-ejb-remote-security-loginmodule-7.1.2-SNAPSHOT.jar --dependencies=javax.api,org.picketbox
+
+Sample login module is already configured in standalone.xml but this assumes
+the module is installed properly.  The above CLI command installs the module.
+This step is required only at the first time.
+
+
 Build and deploy sample EJB
 ---------------------------
 
