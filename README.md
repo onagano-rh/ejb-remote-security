@@ -28,8 +28,10 @@ Run EAP standalone server
 -------------------------
 
     git clone https://github.com/onagano-rh/ejb-remote-security.git
-    cd ejb-remote-security/eap610
-    bin/standalone.sh -Djboss.server.base.dir=./standalone
+    cd ejb-remote-security
+    git checkout thread-auth
+    cd eap610
+    bin/standalone.sh -Djboss.server.base.dir=./standalone &
 
 Then an EAP standalone server runs in the `eap610` directory, using
 configurations in the `standalone` directory.

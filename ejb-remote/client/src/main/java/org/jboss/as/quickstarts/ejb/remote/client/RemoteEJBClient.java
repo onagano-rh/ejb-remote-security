@@ -5,57 +5,81 @@ import org.jboss.as.quickstarts.ejb.remote.secure.SecureCalculator;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.util.Hashtable;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jboss.ejb.client.ContextSelector;
+import org.jboss.ejb.client.EJBClientConfiguration;
+import org.jboss.ejb.client.EJBClientContext;
+import org.jboss.ejb.client.PropertiesBasedEJBClientConfiguration;
+import org.jboss.ejb.client.remoting.ConfigBasedEJBClientContextSelector;
 
 public class RemoteEJBClient {
 
     public static void main(String[] args) throws Exception {
-        // Invoke a stateless bean
-        invokeStatelessBean();
+        // Suppress Remoting logs.
+        Logger.getLogger("").setLevel(Level.OFF);
+
+        final RemoteEJBClient client = new RemoteEJBClient();
+        client.setEJBClientContext();
+
+        System.out.println("Invoking in " + Thread.currentThread().getName());
+        client.invokeStatelessBean();
+
+        Thread t1 = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Invoking in " + Thread.currentThread().getName());
+                        client.invokeStatelessBean();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        t1.start();
+        t1.join();
     }
 
-    /**
-     * Looks up a stateless bean and invokes on it
-     *
-     * @throws NamingException
-     */
-    private static void invokeStatelessBean() throws NamingException {
-        // Let's lookup the remote stateless calculator
-        final SecureCalculator statelessRemoteCalculator = lookupRemoteStatelessCalculator();
-        System.out.println("Obtained a remote stateless calculator for invocation");
-        // invoke on the remote calculator
-        int a = 204;
-        int b = 340;
-        System.out.println("Adding " + a + " and " + b + " via the remote stateless calculator deployed on the server");
-        int sum = statelessRemoteCalculator.add(a, b);
-        System.out.println("Remote calculator returned sum = " + sum);
-        if (sum != a + b) {
-            throw new RuntimeException("Remote stateless calculator returned an incorrect sum " + sum + " ,expected sum was " + (a + b));
-        }
-        // try one more invocation, this time for subtraction
-        int num1 = 3434;
-        int num2 = 2332;
-        System.out.println("Subtracting " + num2 + " from " + num1 + " via the remote stateless calculator deployed on the server");
-        int difference = statelessRemoteCalculator.subtract(num1, num2);
-        System.out.println("Remote calculator returned difference = " + difference);
-        if (difference != num1 - num2) {
-            throw new RuntimeException("Remote stateless calculator returned an incorrect difference " + difference + " ,expected difference was " + (num1 - num2));
-        }
-    }
-
-    /**
-     * Looks up and returns the proxy to remote stateless calculator bean
-     *
-     * @return
-     * @throws NamingException
-     */
-    private static SecureCalculator lookupRemoteStatelessCalculator() throws NamingException {
-        final Hashtable jndiProperties = new Hashtable();
+    private void invokeStatelessBean() throws NamingException {
+        final Properties jndiProperties = new Properties();
         jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         final Context context = new InitialContext(jndiProperties);
+        try {
+            final SecureCalculator statelessRemoteCalculator = (SecureCalculator) context.lookup(
+                "ejb:/jboss-as-ejb-remote-server-side/SecureCalculatorBean!" + SecureCalculator.class.getName()
+            );
 
-        return (SecureCalculator) context.lookup(
-          "ejb:/jboss-as-ejb-remote-server-side/SecureCalculatorBean!" + SecureCalculator.class.getName()
-        );
+            // invoke on the remote calculator
+            int a = 204;
+            int b = 340;
+            int sum = statelessRemoteCalculator.add(a, b);
+            System.out.println("Remote calculator returned sum = " + sum);
+            if (sum != a + b) {
+                throw new RuntimeException("Remote stateless calculator returned an incorrect sum " + sum + " ,expected sum was " + (a + b));
+            }
+        } finally {
+            context.close();
+        }
+    }
+
+    private void setEJBClientContext() throws Exception {
+        String hostName = "localhost";
+        String port = "4447";
+        String userName = "quickstartUser";
+        String password = "quickstartPwd1!";
+        Properties invokeProperties = new Properties();
+        invokeProperties.put("endpoint.name", "client-endpoint");
+        invokeProperties.put("remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED", "false");
+        invokeProperties.put("remote.connections", "default");
+        invokeProperties.put("remote.connection.default.host", hostName);
+        invokeProperties.put("remote.connection.default.port", port);
+        invokeProperties.put("remote.connection.default.connect.options.org.xnio.Options.SASL_POLICY_NOANONYMOUS", "true");
+        invokeProperties.put("remote.connection.default.connect.options.org.xnio.Options.SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
+        invokeProperties.put("remote.connection.default.connect.options.org.xnio.Options.SASL_POLICY_NOPLAINTEXT", "false");
+        invokeProperties.put("remote.connection.default.username", userName);
+        invokeProperties.put("remote.connection.default.password", password);
+        EJBClientConfiguration ejbcc = new PropertiesBasedEJBClientConfiguration(invokeProperties);
+        ContextSelector<EJBClientContext> ejbCtxSel = new ConfigBasedEJBClientContextSelector(ejbcc);
+        EJBClientContext.setSelector(ejbCtxSel);
     }
 }
