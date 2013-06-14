@@ -28,9 +28,10 @@ Run EAP standalone server
 -------------------------
 
     git clone https://github.com/onagano-rh/ejb-remote-security.git
-    git checkout custom-security
-    cd ejb-remote-security/eap610
-    bin/standalone.sh -Djboss.server.base.dir=./standalone
+    cd ejb-remote-security
+    git checkout -b custom-security origin/custom-security
+    cd eap610
+    bin/standalone.sh -Djboss.server.base.dir=./standalone &
 
 Then an EAP standalone server runs in the `eap610` directory, using
 configurations in the `standalone` directory.
@@ -59,6 +60,7 @@ Build and deploy sample EJB
 
 When you modify the EJB source code, execute `mvn clean` in prior to
 `mvn install` for sure.
+If you are asked for username and password when deploying, use "quickstartUser" and "quickstartPwd1!".
 
 
 Build and run sample client
