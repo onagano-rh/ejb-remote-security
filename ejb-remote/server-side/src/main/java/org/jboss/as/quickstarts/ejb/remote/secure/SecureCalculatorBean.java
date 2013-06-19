@@ -13,11 +13,13 @@ public class SecureCalculatorBean implements SecureCalculator {
 
     @Override
     public int add(int a, int b) {
+        System.out.println(this.getClass() + "#add called.");
         return a + b;
     }
 
     @Override
     public int subtract(int a, int b) {
+        System.out.println(this.getClass() + "#subtract called.");
         return a - b;
     }
 }

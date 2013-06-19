@@ -138,16 +138,16 @@ public class Case00833851SimpleJBossApiClient {
         }
         // debug = Boolean.TRUE;
 
-        Case00833851SimpleJBossApiClient client1 = new Case00833851SimpleJBossApiClient(user, passwd, port, debug);
-        client1.invokeUsingRemoteNaming();
-        client1.invokeUsingRemoteNaming();
-        client1.invokeUsingRemoteNaming();
-        client1.invokeUsingRemoteNaming();
+        // Case00833851SimpleJBossApiClient client1 = new Case00833851SimpleJBossApiClient(user, passwd, port, debug);
+        // client1.invokeUsingRemoteNaming();
+        // client1.invokeUsingRemoteNaming();
+        // client1.invokeUsingRemoteNaming();
+        // client1.invokeUsingRemoteNaming();
 
         Case00833851SimpleJBossApiClient client2 = new Case00833851SimpleJBossApiClient(user, passwd, port, debug);
         client2.invokeWithEJBClientAPI();
-        client2.invokeWithEJBClientAPI();
-        client2.invokeWithEJBClientAPI();
-        client2.invokeWithEJBClientAPI();
+        // client2.invokeWithEJBClientAPI();
+        // client2.invokeWithEJBClientAPI();
+        // client2.invokeWithEJBClientAPI();
     }
 }
