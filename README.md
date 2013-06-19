@@ -60,7 +60,7 @@ Build and deploy sample EJB
 
 When you modify the EJB source code, execute `mvn clean` in prior to
 `mvn install` for sure.
-If you are asked for username and password when deploying, use "quickstartUser" and "quickstartPwd1!".
+If you are asked for username and password when deploying, use `quickstartUser` and `quickstartPwd1!`.
 
 
 Build and run sample client
@@ -76,6 +76,10 @@ When you modify the client source code execute `mvn clean` in priof to
 `mvn exec:exec` will find `./target/classes/jboss-ejb-client.properties`
 for the connecting informantion like username and password.
 Edit this file, not the one in `./src/main/resources` for a temporary change.
+
+Or simply use the following `java` command.
+
+    java -cp ./target/classes:../server-side/target/classes:$JBOSS_HOME/bin/client/jboss-client.jar org.jboss.as.quickstarts.ejb.remote.client.Case00833851SimpleJBossApiClient    
 
 
 How to add users
