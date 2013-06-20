@@ -24,12 +24,18 @@ You can find more details about this configuration at
 if needed.
 
 
+Checkout the project
+--------------------
+
+    git clone https://github.com/onagano-rh/ejb-remote-security.git
+    cd ejb-remote-security
+
+
 Run EAP standalone server
 -------------------------
 
-    git clone https://github.com/onagano-rh/ejb-remote-security.git
-    cd ejb-remote-security/eap610
-    bin/standalone.sh -Djboss.server.base.dir=./standalone
+    cd eap610
+    bin/standalone.sh -Djboss.server.base.dir=./standalone &
 
 Then an EAP standalone server runs in the `eap610` directory, using
 configurations in the `standalone` directory.
@@ -58,7 +64,7 @@ When you modify the client source code execute `mvn clean` in priof to
 
 `mvn exec:exec` will find `./target/classes/jboss-ejb-client.properties`
 for the connecting informantion like username and password.
-Edit this file, not the one in `./src/main/resources` for a temporary change.
+Edit this file for a temporary change, not the one in `./src/main/resources`.
 
 
 How to add users
