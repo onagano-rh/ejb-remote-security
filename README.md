@@ -24,12 +24,17 @@ You can find more details about this configuration at
 if needed.
 
 
-Run EAP standalone server
--------------------------
+Checkout the project
+--------------------
 
     git clone https://github.com/onagano-rh/ejb-remote-security.git
     cd ejb-remote-security
-    git checkout thread-auth
+    git checkout -b thread-auth origin/thread-auth
+
+
+Run EAP standalone server
+-------------------------
+
     cd eap610
     bin/standalone.sh -Djboss.server.base.dir=./standalone &
 
